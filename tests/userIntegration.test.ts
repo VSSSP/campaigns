@@ -1,7 +1,7 @@
 import request from 'supertest';
 
 describe('User Integration Tests', () => {
-  const baseUrl = 'http://localhost:3000'; // Adjust to your application's base URL
+  const baseUrl = 'http://localhost:3000';
 
   let uniqueEmail: string;
 

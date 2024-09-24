@@ -7,6 +7,12 @@ import {
   BeforeInsert,
 } from 'typeorm';
 
+export enum CampaignStatus {
+  ATIVA = 'ativa',
+  PAUSADA = 'pausada',
+  EXPIRADA = 'expirada',
+}
+
 @Entity('campaign')
 export class Campaign {
   @PrimaryGeneratedColumn('uuid')
@@ -25,7 +31,7 @@ export class Campaign {
   dataFim!: Date;
 
   @Column()
-  status!: string;
+  status!: CampaignStatus;
 
   @Column()
   categoria!: string;
@@ -37,7 +43,7 @@ export class Campaign {
   checkStatus() {
     const now = new Date();
     if (new Date(this.dataFim) < now) {
-      this.status = 'expirada';
+      this.status = CampaignStatus.EXPIRADA;
     }
   }
 }

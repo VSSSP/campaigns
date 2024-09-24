@@ -1,14 +1,13 @@
 import request from 'supertest';
 
 describe('Campaign Integration Tests', () => {
-  const baseUrl = 'http://localhost:3000'; // Adjust to your application's base URL
+  const baseUrl = 'http://localhost:3000';
   let token: string;
   let campaignId: string;
 
   beforeAll(async () => {
     const uniqueEmail = `campaignuser${Date.now()}@example.com`;
 
-    // Register a user
     await request(baseUrl)
       .post('/register')
       .send({
@@ -16,7 +15,6 @@ describe('Campaign Integration Tests', () => {
         password: 'password123',
       });
 
-    // Login to get a token
     const loginResponse = await request(baseUrl)
       .post('/login')
       .send({
