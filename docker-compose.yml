@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000' # Application port
+      - '9229:9229' # Debugger port
+    volumes:
+      - .:/usr/src/index # Bind mount to sync changes, matching WORKDIR
+      - /usr/src/index/node_modules # Prevent overwriting node_modules in the container
+    depends_on:
+      - db
+    environment:
+      - PORT=3000
+      - JWT_SECRET=${JWT_SECRET}
+      - DB_HOST=${DB_HOST} # This should use the variable from the .env file
+      - DB_PORT=${DB_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - NODE_OPTIONS=--inspect=0.0.0.0:9229
+    env_file:
+      - .env
+    command: nodemon --watch . --exec ts-node src/index.ts # Run nodemon with ts-node for TypeScript
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    
+volumes:
+  pgdata:
