@@ -1,0 +1,406 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Campaign API",
+        "version": "1.0.0",
+        "description": "API para gerenciamento de campanhas"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "schemes": ["http"],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": ["Autenticação"],
+                "summary": "Realiza login do usuário",
+                "description": "Autentica um usuário e retorna um token JWT",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "Credenciais",
+                    "description": "Email e senha do usuário",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/Login"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Login realizado com sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/AuthResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Erro nas credenciais",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": ["Autenticação"],
+                "summary": "Registra um novo usuário",
+                "description": "Cria um novo usuário no sistema",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "Dados do usuário",
+                    "description": "Informações para registro do usuário",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/Register"
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado com sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na criação do usuário",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/campaigns": {
+            "get": {
+                "tags": ["Campanhas"],
+                "summary": "Lista todas as campanhas",
+                "description": "Retorna uma lista de todas as campanhas ativas",
+                "security": [{
+                    "Bearer": []
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Lista de campanhas",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Campaign"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Campanhas"],
+                "summary": "Cria uma nova campanha",
+                "description": "Adiciona uma nova campanha ao sistema",
+                "security": [{
+                    "Bearer": []
+                }],
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "Dados da campanha",
+                    "description": "Informações da campanha a ser criada",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/CampaignInput"
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Campanha criada com sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/Campaign"
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na criação da campanha",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/campaigns/{id}": {
+            "get": {
+                "tags": ["Campanhas"],
+                "summary": "Obtém uma campanha pelo ID",
+                "description": "Retorna uma campanha específica com base no ID fornecido",
+                "security": [{
+                    "Bearer": []
+                }],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID da campanha",
+                    "required": true,
+                    "type": "string",
+                    "format": "uuid"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Campanha encontrada",
+                        "schema": {
+                            "$ref": "#/definitions/Campaign"
+                        }
+                    },
+                    "404": {
+                        "description": "Campanha não encontrada",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Campanhas"],
+                "summary": "Atualiza uma campanha",
+                "description": "Atualiza os dados de uma campanha existente",
+                "security": [{
+                    "Bearer": []
+                }],
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da campanha",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "in": "body",
+                        "name": "Dados da campanha",
+                        "description": "Informações atualizadas da campanha",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CampaignInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Campanha atualizada com sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/Campaign"
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na atualização da campanha",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Campanha não encontrada",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Campanhas"],
+                "summary": "Exclui uma campanha",
+                "description": "Realiza o soft delete de uma campanha",
+                "security": [{
+                    "Bearer": []
+                }],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID da campanha",
+                    "required": true,
+                    "type": "string",
+                    "format": "uuid"
+                }],
+                "responses": {
+                    "204": {
+                        "description": "Campanha excluída com sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/CampaignInput"
+                        }
+                    },
+                    "404": {
+                        "description": "Campanha não encontrada",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Login": {
+            "type": "object",
+            "required": ["email", "password"],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "admin@admin.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "admin123"
+                }
+            }
+        },
+        "Register": {
+            "type": "object",
+            "required": ["email", "password"],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "admin@admin.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "admin123"
+                }
+            }
+        },
+        "AuthResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+            }
+        },
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                }
+            }
+        },
+        "Campaign": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "nome": {
+                    "type": "string",
+                    "example": "Campanha de Marketing"
+                },
+                "dataCadastro": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "dataInicio": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "dataFim": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": ["ativa", "pausada", "expirada"]
+                },
+                "categoria": {
+                    "type": "string",
+                    "example": "Marketing"
+                }
+            }
+        },
+        "CampaignInput": {
+            "type": "object",
+            "required": ["nome", "dataInicio", "dataFim", "status", "categoria"],
+            "properties": {
+                "nome": {
+                    "type": "string",
+                    "example": "Nova Campanha"
+                },
+                "dataInicio": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2024-10-01T00:00:00Z"
+                },
+                "dataFim": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2024-12-31T23:59:59Z"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": ["ativa", "pausada", "expirada"],
+                    "example": "ativa"
+                },
+                "categoria": {
+                    "type": "string",
+                    "example": "Marketing"
+                }
+            }
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Descrição do erro"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT no formato: Bearer {token}"
+        }
+    }
+}
