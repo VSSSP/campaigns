@@ -18,7 +18,7 @@ Ensure you have Docker and Docker Compose installed on your machine.
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/campaigns.git
+   git clone https://github.com/vsssp/campaigns.git
    cd campaigns
    ```
 
