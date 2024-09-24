@@ -1,6 +1,3 @@
-Here is the `README.md` file content:
-
-```markdown
 # 📣 Campaigns Application
 
 Welcome to the **Campaigns Application**! 🎉 This application allows you to manage marketing campaigns efficiently. It provides a RESTful API for creating, updating, retrieving, and deleting campaigns.
@@ -102,8 +99,3 @@ Contributions are welcome! Please submit a pull request or open an issue to disc
 ### 📝 License
 
 This project is licensed under the MIT License.
-
----
-
-Happy coding! 🎈
-```
