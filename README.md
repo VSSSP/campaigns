@@ -18,7 +18,7 @@ Ensure you have Docker and Docker Compose installed on your machine.
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/vsssp/campaigns.git
+   git clone git@github.com:VSSSP/campaigns.git
    cd campaigns
    ```
 
@@ -88,13 +88,6 @@ The API follows RESTful principles and provides the following endpoints:
 
 - **Unique Emails**: The application requires unique email addresses for user registration.
 - **JWT Authentication**: Protected routes require a valid JWT token in the `Authorization` header in the format `Bearer <token>`.
-- **Date Formats**: Dates should be provided in ISO 8601 format.
-- **Integration Tests**: The tests are designed to run with the application running and will interact with the actual database. Be cautious as test data will be inserted into the database.
-- **Latest Adjustments**: The application now uses unique emails for test users to prevent conflicts, and the tests have been refactored to address authentication issues.
-
-### 🤝 Contributing
-
-Contributions are welcome! Please submit a pull request or open an issue to discuss changes.
 
 ### 📝 License
 
